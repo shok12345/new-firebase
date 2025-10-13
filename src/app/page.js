@@ -10,7 +10,6 @@ export const dynamic = "force-dynamic";
 
 // This line also forces this route to be server-side rendered
 // export const revalidate = 0;
-
 export default async function Home(props) {
   const searchParams = await props.searchParams;
   // Using seachParams which Next.js provides, allows the filtering to happen on the server-side, for example:
