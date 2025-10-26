@@ -1,11 +1,11 @@
 {
   "indexes": [
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "genre",
           "order": "ASCENDING"
         },
         {
@@ -15,11 +15,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "genre",
           "order": "ASCENDING"
         },
         {
@@ -29,11 +29,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "genre",
           "order": "ASCENDING"
         },
         {
@@ -43,11 +43,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "developer",
           "order": "ASCENDING"
         },
         {
@@ -57,11 +57,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "developer",
           "order": "ASCENDING"
         },
         {
@@ -71,11 +71,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "developer",
           "order": "ASCENDING"
         },
         {
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "games",
       "queryScope": "COLLECTION",
       "fields": [
         {
