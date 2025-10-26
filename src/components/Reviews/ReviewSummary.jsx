@@ -1,22 +1,22 @@
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai"; // Import Gemini model and plugin from Genkit Google AI SDK
 import { genkit } from "genkit"; // Import Genkit core to configure and use AI models
-import { getReviewsByRestaurantId } from "@/src/lib/firebase/firestore.js"; // Import Firestore helper to fetch reviews for a specific restaurant
+import { getReviewsByGameId } from "@/src/lib/firebase/firestore.js"; // Import Firestore helper to fetch reviews for a specific game
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp"; // Import function to get authenticated Firebase app instance
 import { getFirestore } from "firebase/firestore"; // Import Firestore SDK to interact with the database
 
-// Define an asynchronous component that fetches and summarizes reviews for a restaurant
-export async function GeminiSummary({ restaurantId }) {
+// Define an asynchronous component that fetches and summarizes reviews for a game
+export async function GeminiSummary({ gameId }) {
   const { firebaseServerApp } = await getAuthenticatedAppForUser(); // Get the authenticated Firebase server app
-  const reviews = await getReviewsByRestaurantId( // Fetch all reviews for the given restaurant ID
+  const reviews = await getReviewsByGameId( // Fetch all reviews for the given game ID
     getFirestore(firebaseServerApp), // Use Firestore instance from the authenticated app
-    restaurantId // Target restaurant ID
+    gameId // Target game ID
   );
 
   const reviewSeparator = "@"; // Character used to separate reviews in the prompt
   const prompt = `
-    Based on the following restaurant reviews, 
+    Based on the following game reviews, 
     where each review is separated by a '${reviewSeparator}' character, 
-    create a one-sentence summary of what people think of the restaurant. 
+    create a one-sentence summary of what people think of the game. 
 
     Here are the reviews: ${reviews.map((review) => review.text).join(reviewSeparator)}
   `; // Create a prompt string that includes all reviews separated by '@'
@@ -39,7 +39,7 @@ export async function GeminiSummary({ restaurantId }) {
     const { text } = await ai.generate(prompt); // Generate summary text from the AI model using the prompt
 
     return (
-      <div className="restaurant__review_summary"> {/* Return a JSX element with the summary */}
+      <div className="game__review_summary"> {/* Return a JSX element with the summary */}
         <p>{text}</p> {/* Display the generated summary */}
         <p>✨ Summarized with Gemini</p> {/* Add a visual indicator for the AI summary */}
       </div>
@@ -53,7 +53,7 @@ export async function GeminiSummary({ restaurantId }) {
 // Define a fallback skeleton UI for loading state
 export function GeminiSummarySkeleton() {
   return (
-    <div className="restaurant__review_summary"> {/* Container for the loading state */}
+    <div className="game__review_summary"> {/* Container for the loading state */}
       <p>✨ Summarizing reviews with Gemini...</p> {/* Placeholder message shown while summary is loading */}
     </div>
   );

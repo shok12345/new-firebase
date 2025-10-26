@@ -1,4 +1,4 @@
-import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeGames.js"; // Import utility to generate fake data for testing/demo
+import { generateFakeGamesAndReviews } from "@/src/lib/fakeGames.js"; // Import utility to generate fake data for testing/demo
 
 // Import Firestore functions needed to read, write, and observe data
 import {
@@ -19,14 +19,14 @@ import {
 
 import { db } from "@/src/lib/firebase/clientApp"; // Import initialized Firestore client instance
 
-// Updates the 'photo' field of a restaurant document with a new image URL
-export async function updateRestaurantImageReference(
-  restaurantId,
+// Updates the 'photo' field of a game document with a new image URL
+export async function updateGameImageReference(
+  gameId,
   publicImageUrl
 ) {
-  const restaurantRef = doc(collection(db, "restaurants"), restaurantId); // Reference to the restaurant document
-  if (restaurantRef) {
-    await updateDoc(restaurantRef, { photo: publicImageUrl }); // Update the 'photo' field
+  const gameRef = doc(collection(db, "games"), gameId); // Reference to the game document
+  if (gameRef) {
+    await updateDoc(gameRef, { photo: publicImageUrl }); // Update the 'photo' field
   }
 }
 
@@ -37,8 +37,8 @@ const updateWithRating = async (
   newRatingDocument,
   review
 ) => {
-  const restaurant = await transaction.get(docRef); // Get current restaurant data
-  const data = restaurant.data(); // Extract restaurant data
+  const game = await transaction.get(docRef); // Get current game data
+  const data = game.data(); // Extract game data
   const newNumRatings = data?.numRatings ? data.numRatings + 1 : 1; // Increment total number of ratings
   const newSumRating = (data?.sumRating || 0) + Number(review.rating); // Add new rating to sum
   const newAverage = newSumRating / newNumRatings; // Calculate new average rating
@@ -47,7 +47,7 @@ const updateWithRating = async (
     numRatings: newNumRatings,
     sumRating: newSumRating,
     avgRating: newAverage,
-  }); // Update restaurant stats
+  }); // Update game stats
 
   transaction.set(newRatingDocument, {
     ...review,
@@ -55,10 +55,10 @@ const updateWithRating = async (
   }); // Save the new review under the 'ratings' subcollection
 };
 
-// Adds a new review to a restaurant and updates rating stats atomically
-export async function addReviewToRestaurant(db, restaurantId, review) {
-  if (!restaurantId) {
-    throw new Error("No restaurant ID has been provided."); // Error if no restaurant ID
+// Adds a new review to a game and updates rating stats atomically
+export async function addReviewToGame(db, gameId, review) {
+  if (!gameId) {
+    throw new Error("No game ID has been provided."); // Error if no game ID
   }
 
   if (!review) {
@@ -66,18 +66,18 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
   }
 
   try {
-    const docRef = doc(collection(db, "restaurants"), restaurantId); // Reference to the restaurant doc
+    const docRef = doc(collection(db, "games"), gameId); // Reference to the game doc
     const newRatingDocument = doc(
-      collection(db, `restaurants/${restaurantId}/ratings`) // Reference to new rating doc in subcollection
+      collection(db, `games/${gameId}/ratings`) // Reference to new rating doc in subcollection
     );
 
-    // Run transaction to update restaurant and add rating
+    // Run transaction to update game and add rating
     await runTransaction(db, transaction =>
       updateWithRating(transaction, docRef, newRatingDocument, review)
     );
   } catch (error) {
     console.error(
-      "There was an error adding the rating to the restaurant",
+      "There was an error adding the rating to the game",
       error
     );
     throw error; // Rethrow error after logging
@@ -85,12 +85,12 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
 }
 
 // Applies Firestore query filters based on provided filter object
-function applyQueryFilters(q, { category, city, price, sort }) {
-  if (category) {
-    q = query(q, where("category", "==", category)); // Filter by category
+function applyQueryFilters(q, { genre, platform, price, sort }) {
+  if (genre) {
+    q = query(q, where("genre", "==", genre)); // Filter by genre
   }
-  if (city) {
-    q = query(q, where("city", "==", city)); // Filter by city
+  if (platform) {
+    q = query(q, where("platform", "==", platform)); // Filter by platform
   }
   if (price) {
     q = query(q, where("price", "==", price.length)); // Filter by price level (assumes price is "$" repeated)
@@ -103,9 +103,9 @@ function applyQueryFilters(q, { category, city, price, sort }) {
   return q; // Return the updated query
 }
 
-// Fetches restaurants from Firestore and applies optional filters
-export async function getRestaurants(db = db, filters = {}) {
-  let q = query(collection(db, "restaurants")); // Base query
+// Fetches games from Firestore and applies optional filters
+export async function getGames(db = db, filters = {}) {
+  let q = query(collection(db, "games")); // Base query
 
   q = applyQueryFilters(q, filters); // Apply filters
   const results = await getDocs(q); // Execute query
@@ -119,14 +119,14 @@ export async function getRestaurants(db = db, filters = {}) {
   });
 }
 
-// Subscribes to real-time updates for restaurants using Firestore's onSnapshot
-export function getRestaurantsSnapshot(cb, filters = {}) {
+// Subscribes to real-time updates for games using Firestore's onSnapshot
+export function getGamesSnapshot(cb, filters = {}) {
   if (typeof cb !== "function") {
     console.log("Error: The callback parameter is not a function"); // Validate callback
     return;
   }
 
-  let q = query(collection(db, "restaurants")); // Base query
+  let q = query(collection(db, "games")); // Base query
   q = applyQueryFilters(q, filters); // Apply filters
 
   return onSnapshot(q, (querySnapshot) => {
@@ -142,13 +142,13 @@ export function getRestaurantsSnapshot(cb, filters = {}) {
   });
 }
 
-// Fetch a single restaurant by ID
-export async function getRestaurantById(db, restaurantId) {
-  if (!restaurantId) {
-    console.log("Error: Invalid ID received: ", restaurantId); // Log error if ID is missing
+// Fetch a single game by ID
+export async function getGameById(db, gameId) {
+  if (!gameId) {
+    console.log("Error: Invalid ID received: ", gameId); // Log error if ID is missing
     return;
   }
-  const docRef = doc(db, "restaurants", restaurantId); // Reference to the restaurant doc
+  const docRef = doc(db, "games", gameId); // Reference to the game doc
   const docSnap = await getDoc(docRef); // Get the document
   return {
     ...docSnap.data(),
@@ -157,19 +157,19 @@ export async function getRestaurantById(db, restaurantId) {
 }
 
 // Placeholder function – does nothing currently
-export function getRestaurantSnapshotById(restaurantId, cb) {
+export function getGameSnapshotById(gameId, cb) {
   return;
 }
 
-// Fetch all reviews for a specific restaurant, ordered by timestamp descending
-export async function getReviewsByRestaurantId(db, restaurantId) {
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId); // Log error if ID is missing
+// Fetch all reviews for a specific game, ordered by timestamp descending
+export async function getReviewsByGameId(db, gameId) {
+  if (!gameId) {
+    console.log("Error: Invalid gameId received: ", gameId); // Log error if ID is missing
     return;
   }
 
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"), // Reference to ratings subcollection
+    collection(db, "games", gameId, "ratings"), // Reference to ratings subcollection
     orderBy("timestamp", "desc") // Order by latest first
   );
 
@@ -183,15 +183,15 @@ export async function getReviewsByRestaurantId(db, restaurantId) {
   });
 }
 
-// Subscribes to real-time updates for a restaurant’s reviews
-export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId); // Log error if missing ID
+// Subscribes to real-time updates for a game's reviews
+export function getReviewsSnapshotByGameId(gameId, cb) {
+  if (!gameId) {
+    console.log("Error: Invalid gameId received: ", gameId); // Log error if missing ID
     return;
   }
 
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"), // Reference to ratings
+    collection(db, "games", gameId, "ratings"), // Reference to ratings
     orderBy("timestamp", "desc") // Order by timestamp descending
   );
   return onSnapshot(q, (querySnapshot) => {
@@ -206,20 +206,20 @@ export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
   });
 }
 
-// Populates the database with randomly generated restaurants and their reviews
-export async function addFakeRestaurantsAndReviews() {
-  const data = await generateFakeRestaurantsAndReviews(); // Generate mock data
+// Populates the database with randomly generated games and their reviews
+export async function addFakeGamesAndReviews() {
+  const data = await generateFakeGamesAndReviews(); // Generate mock data
 
-  for (const { restaurantData, ratingsData } of data) {
+  for (const { gameData, ratingsData } of data) {
     try {
       const docRef = await addDoc(
-        collection(db, "restaurants"), // Add a restaurant doc
-        restaurantData
+        collection(db, "games"), // Add a game doc
+        gameData
       );
 
       for (const ratingData of ratingsData) {
         await addDoc(
-          collection(db, "restaurants", docRef.id, "ratings"), // Add each review to subcollection
+          collection(db, "games", docRef.id, "ratings"), // Add each review to subcollection
           ratingData
         );
       }

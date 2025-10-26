@@ -1,4 +1,4 @@
-// The filters shown on the restaurant listings page
+// The filters shown on the game listings page
 
 import Tag from "@/src/components/Tag.jsx";
 
@@ -38,7 +38,7 @@ export default function Filters({ filters, setFilters }) {
         <summary>
           <img src="/filter.svg" alt="filter" />
           <div>
-            <p>Restaurants</p>
+            <p>Games</p>
             <p>Sorted by {filters.sort || "Rating"}</p>
           </div>
         </summary>
@@ -51,48 +51,40 @@ export default function Filters({ filters, setFilters }) {
           }}
         >
           <FilterSelect
-            label="Category"
+            label="Genre"
             options={[
               "",
-              "Italian",
-              "Chinese",
-              "Japanese",
-              "Mexican",
-              "Indian",
-              "Mediterranean",
-              "Caribbean",
-              "Cajun",
-              "German",
-              "Russian",
-              "Cuban",
-              "Organic",
-              "Tapas",
+              "Action",
+              "RPG",
+              "Strategy",
+              "Sports",
+              "Adventure",
             ]}
-            value={filters.category}
-            onChange={(event) => handleSelectionChange(event, "category")}
-            name="category"
+            value={filters.genre}
+            onChange={(event) => handleSelectionChange(event, "genre")}
+            name="genre"
             icon="/food.svg"
           />
 
           <FilterSelect
-            label="City"
+            label="Platform"
             options={[
               "",
-              "New York",
-              "Los Angeles",
-              "London",
-              "Paris",
-              "Tokyo",
-              "Mumbai",
-              "Dubai",
-              "Amsterdam",
-              "Seoul",
-              "Singapore",
-              "Istanbul",
+              "PC",
+              "PlayStation",
+              "Xbox",
+              "Nintendo Switch",
+              "Mobile",
+              "Steam Deck",
+              "PlayStation VR",
+              "Meta Quest",
+              "iOS",
+              "Android",
+              "Mac",
             ]}
-            value={filters.city}
-            onChange={(event) => handleSelectionChange(event, "city")}
-            name="city"
+            value={filters.platform}
+            onChange={(event) => handleSelectionChange(event, "platform")}
+            name="platform"
             icon="/location.svg"
           />
 
@@ -121,8 +113,8 @@ export default function Filters({ filters, setFilters }) {
                 type="reset"
                 onClick={() => {
                   setFilters({
-                    city: "",
-                    category: "",
+                    platform: "",
+                    genre: "",
                     price: "",
                     sort: "",
                   });
