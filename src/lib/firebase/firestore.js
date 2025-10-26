@@ -1,4 +1,4 @@
-import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeRestaurants.js"; // Import utility to generate fake data for testing/demo
+import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeGames.js"; // Import utility to generate fake data for testing/demo
 
 // Import Firestore functions needed to read, write, and observe data
 import {
