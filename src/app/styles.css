@@ -55,7 +55,7 @@ dialog {
   }
 
   &::backdrop {
-    background-color: #f6f7f9;
+    background-color: #bed4ff;
     opacity: 0.8;
   }
 }
