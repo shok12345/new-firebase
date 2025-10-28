@@ -194,7 +194,7 @@ header {
 }
 
 .main__home {
-  background-color: rgb(178 193 212);
+  background-color: rgb(78, 111, 153);
   min-height: 100vh;
 }
 
@@ -205,7 +205,7 @@ header {
 
 article {
   margin: 0 auto;
-  background-color: rgb(229 234 240);
+  background-color: rgb(109, 151, 202);
   padding: 20px 40px;
 }
 
