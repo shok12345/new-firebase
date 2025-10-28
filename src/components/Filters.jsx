@@ -94,7 +94,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.price}
             onChange={(event) => handleSelectionChange(event, "price")}
             name="price"
-            icon="/price.svg"
+            icon="/money.png"
           />
 
           <FilterSelect
@@ -103,7 +103,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.sort}
             onChange={(event) => handleSelectionChange(event, "sort")}
             name="sort"
-            icon="/sortBy.svg"
+            icon="/sort.png"
           />
 
           <footer>
