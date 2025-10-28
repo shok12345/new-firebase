@@ -62,7 +62,10 @@ export async function generateFakeGamesAndReviews() {
         0
       ),
       price: randomNumberBetween(1, 4),
-      photo: `games/game-image-1.jpg`,
+      //photo: `games/game-image-1.jpg`,
+
+      photo: `/games/game-image-${randomNumberBetween(1, 22)}.jpg`,
+      
       // photo: `https://storage.googleapis.com/firestorequickstarts.appspot.com/food_${randomNumberBetween(
       //   1,
       //   22
