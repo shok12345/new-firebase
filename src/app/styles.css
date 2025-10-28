@@ -38,7 +38,7 @@ dialog {
     box-shadow: -7px 12px 14px 6px rgba(54, 54, 54, 0.2);
 
     & article {
-      background-color: #6397ff;
+      background-color: unset;
     }
   }
 
@@ -205,7 +205,7 @@ header {
 
 article {
   margin: 0 auto;
-  background-color: rgb(109, 151, 202);
+  background-color: rgb(240, 240, 240);
   padding: 20px 40px;
 }
 
