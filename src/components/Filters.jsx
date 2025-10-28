@@ -63,7 +63,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.genre}
             onChange={(event) => handleSelectionChange(event, "genre")}
             name="genre"
-            icon="/food.svg"
+            icon="/game-controller-outline.svg"
           />
 
           <FilterSelect
