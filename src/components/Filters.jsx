@@ -85,7 +85,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.platform}
             onChange={(event) => handleSelectionChange(event, "platform")}
             name="platform"
-            icon="/location.svg"
+            icon="/platform.png"
           />
 
           <FilterSelect
