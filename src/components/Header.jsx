@@ -44,7 +44,7 @@ export default function Header({ initialUser }) {
   return (
     <header>
       <Link href="/" className="logo">
-        <img src="/friendly-eats.svg" alt="Game Reviews" />
+        <img src="/gamelogo.jpg" alt="Game Reviews" />
         Game Reviews
       </Link>
       {user ? (
