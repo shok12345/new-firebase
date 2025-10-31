@@ -278,6 +278,10 @@ a {
     display: flex;
   }
 
+  .games ul{
+    border-radius: 7px;
+  }
+
   & svg {
     width: 2rem;
     height: 2rem;
