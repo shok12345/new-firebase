@@ -276,10 +276,7 @@ a {
 
   & ul {
     display: flex;
-  }
-
-  li{
-    border-radius: 7px;
+    border-radius: 9px;
   }
 
   & svg {
